@@ -1,40 +1,258 @@
-Task 1: Algorithm Growth Observation
-​Implementation
-​The following functions represent the four requested complexity classes:  
-
+TASK 1: Algorithm Growth Observation
+1. Constant Time {O(1)}
+CODE AND OUTPUT:
+Python
+Copy code
 import time
-import numpy as np
-import matplotlib.pyplot as plt
-import math
 
-# 1. Constant Time: O(1)
-def constant_algo(n):
-    return 42 
+def constant_time(n):
+    return 100  # constant operation
 
-# 2. Linear Time: O(n)
-def linear_algo(n):
-    count = 0
+for n in [10, 100, 500, 1000]:
+    start = time.time()
+    constant_time(n)
+    end = time.time()
+    print(f"Input: {n}, Time: {end - start}")
+
+2. Linear Time {O(n)}
+CODE AND OUTPUT:
+Python
+Copy code
+def linear_time(n):
+    total = 0
     for i in range(n):
-        count += 1
-    return count
+        total += i
+    return total
 
-# 3. Quadratic Time: O(n^2)
-def quadratic_algo(n):
-    count = 0
+for n in [10, 100, 500, 1000]:
+    start = time.time()
+    linear_time(n)
+    end = time.time()
+    print(f"Input: {n}, Time: {end - start}")
+
+3. Quadratic Time {O(n²)}
+CODE AND OUTPUT:
+Python
+Copy code
+def quadratic_time(n):
     for i in range(n):
         for j in range(n):
-            count += 1
-    return count
+            pass
 
-# 4. Logarithmic Time: O(log n)
-def logarithmic_algo(n):
-    count = 0
+for n in [10, 100, 500]:
+    start = time.time()
+    quadratic_time(n)
+    end = time.time()
+    print(f"Input: {n}, Time: {end - start}")
+
+4. Logarithmic Time {O(log n)}
+CODE AND OUTPUT:
+Python
+Copy code
+def logarithmic_time(n):
     while n > 1:
-        n //= 2
-        count += 1
-    return count
+        n = n // 2
 
+for n in [10, 100, 500, 1000]:
+    start = time.time()
+    logarithmic_time(n)
+    end = time.time()
+    print(f"Input: {n}, Time: {end - start}")
 
+Plot Case:
+CODE AND OUTPUT:
+Python
+Copy code
+import matplotlib.pyplot as plt
+import numpy as np
+
+input_sizes = [10, 100, 500, 1000]
+constant_times = []
+linear_times = []
+quadratic_times = []
+log_times = []
+
+for n in input_sizes:
+    start = time.time()
+    constant_time(n)
+    constant_times.append(time.time() - start)
+
+    start = time.time()
+    linear_time(n)
+    linear_times.append(time.time() - start)
+
+    start = time.time()
+    quadratic_time(n)
+    quadratic_times.append(time.time() - start)
+
+    start = time.time()
+    logarithmic_time(n)
+    log_times.append(time.time() - start)
+
+plt.plot(input_sizes, constant_times, label="O(1)")
+plt.plot(input_sizes, linear_times, label="O(n)")
+plt.plot(input_sizes[:3], quadratic_times, label="O(n^2)")
+plt.plot(input_sizes, log_times, label="O(log n)")
+
+plt.xlabel("Input Size")
+plt.ylabel("Execution Time")
+plt.title("Input Size vs Execution Time")
+plt.legend()
+plt.savefig("task1_plot.png")
+plt.show()
+
+GRAPH OF INPUT SIZE VS EXECUTION TIME
+(Generated and saved as task1_plot.png)
+
+Observation:
+O(1) remains almost constant
+O(log n) increases slowly
+O(n) increases linearly
+O(n²) increases rapidly
+
+Conclusion:
+Execution time increases with input size depending on algorithm complexity.
+TASK 2: Best, Average, and Worst Case Analysis
+Linear Search
+CODE AND OUTPUT:
+Python
+Copy code
+import random
+
+def linear_search(arr, key):
+    for i in range(len(arr)):
+        if arr[i] == key:
+            return i
+    return -1
+
+sizes = [100, 500, 1000]
+for n in sizes:
+    arr = list(range(n))
+
+    # Best Case
+    start = time.time()
+    linear_search(arr, arr[0])
+    best = time.time() - start
+
+    # Worst Case
+    start = time.time()
+    linear_search(arr, -1)
+    worst = time.time() - start
+
+    print(f"Size {n} -> Best: {best}, Worst: {worst}")
+
+Binary Search
+CODE AND OUTPUT:
+Python
+Copy code
+def binary_search(arr, key):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == key:
+            return mid
+        elif arr[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+for n in sizes:
+    arr = list(range(n))
+
+    start = time.time()
+    binary_search(arr, arr[n//2])
+    best = time.time() - start
+
+    start = time.time()
+    binary_search(arr, -1)
+    worst = time.time() - start
+
+    print(f"Size {n} -> Best: {best}, Worst: {worst}")
+
+Plot Case:
+Python
+Copy code
+plt.plot(sizes, [linear_search(list(range(n)), -1) or 0 for n in sizes], label="Linear")
+plt.plot(sizes, [binary_search(list(range(n)), -1) or 0 for n in sizes], label="Binary")
+plt.legend()
+plt.savefig("task2_plot.png")
+plt.show()
+
+COMPARISON PLOT
+(Generated and saved as task2_plot.png)
+
+TASK 3: Recursion and Recurrence Validation
+FACTORIAL
+CODE AND OUTPUT:
+Python
+Copy code
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n-1)
+
+print(factorial(5))
+FIBONACCI (RECURSIVE)
+CODE AND OUTPUT:
+Python
+Copy code
+def fib_recursive(n):
+    if n <= 1:
+        return n
+    return fib_recursive(n-1) + fib_recursive(n-2)
+
+print(fib_recursive(10))
+FIBONACCI (Dynamic Programming)
+CODE AND OUTPUT:
+Python
+Copy code
+def fib_dp(n):
+    dp = [0]*(n+1)
+    if n > 0:
+        dp[1] = 1
+    for i in range(2, n+1):
+        dp[i] = dp[i-1] + dp[i-2]
+    return dp[n]
+
+print(fib_dp(10))
+
+Observation:
+Recursive Fibonacci takes more time compared to iterative approach.
+
+Conclusion:
+Recursion increases execution time due to repeated function calls.
+
+TASK 4: SOLVING RECURRENCES THROUGH CODE
+T(n) = T(n/2) + n
+CODE AND OUTPUT:
+Python
+Copy code
+def recurrence1(n):
+    if n <= 1:
+        return 1
+    return recurrence1(n//2) + n
+
+print(recurrence1(16))
+T(n) = 2T(n/2) + n
+CODE AND OUTPUT:
+Python
+Copy code
+def recurrence2(n):
+    if n <= 1:
+        return 1
+    return 2 * recurrence2(n//2) + n
+
+print(recurrence2(16))
+For T(n) = T(n/2) + n
+Number of recursive calls increases logarithmically
+Execution time grows linearly
+Asymptotic Complexity: O(n)
+For T(n) = 2T(n/2) + n
+Number of recursive calls increases rapidly
+Execution time grows faster than linear
+Asymptotic Complexity: O(n log n)
 Performance Measurement & Plotting
 ​We measure execution time for n = [10, 100, 500, 1000].  
 sizes = [10, 100, 500, 1000]
