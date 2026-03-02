@@ -1,1 +1,134 @@
+Task 1: Algorithm Growth Observation
+​Implementation
+​The following functions represent the four requested complexity classes:  
 
+import time
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+# 1. Constant Time: O(1)
+def constant_algo(n):
+    return 42 
+
+# 2. Linear Time: O(n)
+def linear_algo(n):
+    count = 0
+    for i in range(n):
+        count += 1
+    return count
+
+# 3. Quadratic Time: O(n^2)
+def quadratic_algo(n):
+    count = 0
+    for i in range(n):
+        for j in range(n):
+            count += 1
+    return count
+
+# 4. Logarithmic Time: O(log n)
+def logarithmic_algo(n):
+    count = 0
+    while n > 1:
+        n //= 2
+        count += 1
+    return count
+Performance Measurement & Plotting
+​We measure execution time for n = [10, 100, 500, 1000].  
+sizes = [10, 100, 500, 1000]
+results = { "O(1)": [], "O(n)": [], "O(n^2)": [], "O(log n)": [] }
+
+for n in sizes:
+    # O(1)
+    start = time.perf_counter()
+    constant_algo(n)
+    results["O(1)"].append(time.perf_counter() - start)
+    
+    # O(n)
+    start = time.perf_counter()
+    linear_algo(n)
+    results["O(n)"].append(time.perf_counter() - start)
+    
+    # O(n^2)
+    start = time.perf_counter()
+    quadratic_algo(n)
+    results["O(n^2)"].append(time.perf_counter() - start)
+    
+    # O(log n)
+    start = time.perf_counter()
+    logarithmic_algo(n)
+    results["O(log n)"].append(time.perf_counter() - start)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+for algo, times in results.items():
+    plt.plot(sizes, times, label=algo, marker='o')
+plt.xlabel('Input Size (n)')
+plt.ylabel('Execution Time (seconds)')
+plt.title('Algorithm Growth Observation')
+plt.legend()
+plt.grid(True)
+plt.show()
+Observation: As n increases, the Quadratic function (O(n^2)) grows at an accelerating rate, while O(1) remains nearly flat. O(n) shows a steady linear slope, and O(\log n) grows so slowly it appears almost constant compared to the quadratic curve.  
+​Task 2: Best, Average, and Worst Case Analysis
+​Implementation
+​Implementing Linear and Binary Search for comparative analysis.  
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+
+def binary_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+Analysis Strategy: * Best Case: Target is at index 0 (Linear) or the middle (Binary).  
+​Worst Case: Target is not in the array.  
+​Average Case: Target is at a random index.  
+​Task 3: Recursion and Recurrence Validation
+​Recursive vs. Optimized Fibonacci
+
+​We compare the naive recursive approach against Dynamic Programming to observe the difference in function calls and time.  
+
+call_count = 0
+
+def fib_naive(n):
+    global call_count
+    call_count += 1
+    if n <= 1: return n
+    return fib_naive(n-1) + fib_naive(n-2)
+
+def fib_dp(n):
+    calls = 0
+    if n <= 1: return n, 1
+    fib_table = [0] * (n + 1)
+    fib_table[1] = 1
+    for i in range(2, n + 1):
+        calls += 1 # Counting iterations as "work units"
+        fib_table[i] = fib_table[i-1] + fib_table[i-2]
+    return fib_table[n], calls
+Observation: The naive recursive Fibonacci has exponential time complexity O(2^n). Dynamic Programming reduces this to O(n) by avoiding redundant calculations.  
+​Task 4: Solving Recurrences through Code
+​We implement functions that mimic the work done in the following recurrences:  
+​T(n) = T(n/2) + n: Corresponds to O(n) via Master Theorem.
+​T(n) = 2T(n/2) + n: Corresponds to O(n \log n) (like Merge Sort).
+​<!-- end list -->
+
+def recurrence_1(n, count=0):
+    if n <= 1: return count + 1
+    # Work done is 'n', plus one recursive call on n/2
+    return recurrence_1(n // 2, count + n)
+
+def recurrence_2(n):
+    if n <= 1: return 1
+    # Two recursive calls on n/2, plus 'n' work
+    return recurrence_2(n // 2) + recurrence_2(n // 2) + n
