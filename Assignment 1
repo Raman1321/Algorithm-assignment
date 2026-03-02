@@ -33,6 +33,8 @@ def logarithmic_algo(n):
         n //= 2
         count += 1
     return count
+
+
 Performance Measurement & Plotting
 ​We measure execution time for n = [10, 100, 500, 1000].  
 sizes = [10, 100, 500, 1000]
@@ -69,7 +71,10 @@ plt.title('Algorithm Growth Observation')
 plt.legend()
 plt.grid(True)
 plt.show()
-Observation: As n increases, the Quadratic function (O(n^2)) grows at an accelerating rate, while O(1) remains nearly flat. O(n) shows a steady linear slope, and O(\log n) grows so slowly it appears almost constant compared to the quadratic curve.  
+
+Observation: As n increases, the Quadratic function (O(n^2)) grows at an accelerating rate, while O(1) remains nearly flat. O(n) shows a steady linear slope, and O(\log n) grows so slowly it appears almost constant compared to the quadratic curve.
+
+
 ​Task 2: Best, Average, and Worst Case Analysis
 ​Implementation
 ​Implementing Linear and Binary Search for comparative analysis.  
@@ -91,6 +96,7 @@ def binary_search(arr, target):
         else:
             high = mid - 1
     return -1
+
 Analysis Strategy: * Best Case: Target is at index 0 (Linear) or the middle (Binary).  
 ​Worst Case: Target is not in the array.  
 ​Average Case: Target is at a random index.  
@@ -116,7 +122,10 @@ def fib_dp(n):
         calls += 1 # Counting iterations as "work units"
         fib_table[i] = fib_table[i-1] + fib_table[i-2]
     return fib_table[n], calls
+
 Observation: The naive recursive Fibonacci has exponential time complexity O(2^n). Dynamic Programming reduces this to O(n) by avoiding redundant calculations.  
+
+
 ​Task 4: Solving Recurrences through Code
 ​We implement functions that mimic the work done in the following recurrences:  
 ​T(n) = T(n/2) + n: Corresponds to O(n) via Master Theorem.
