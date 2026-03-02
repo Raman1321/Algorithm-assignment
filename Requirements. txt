@@ -1,0 +1,9 @@
+To ensure your Python environment is set up correctly for the tasks outlined in your assignment, your requirements.txt file should include the following libraries:
+# Data manipulation and numerical operations
+numpy
+
+# Data visualization and plotting results
+matplotlib
+
+# Jupyter Notebook support (optional but recommended for .ipynb files)
+ipykernel
